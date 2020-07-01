@@ -12,7 +12,7 @@ FileDispatch::FileDispatch(const std::string &name) {
 }
 
 bool FileDispatch::exists(void) {
-    std::ifstream f(this->name);
+    std::ifstream f(this->name.c_str());
     return f.is_open();
 }
 
@@ -21,14 +21,14 @@ void FileDispatch::remove(void) {
 }
 
 bool FileDispatch::isLocked(void) {
-    std::ifstream f(this->lockName);
+    std::ifstream f(this->lockName.c_str());
     return f.is_open();
 }
 
 result_t FileDispatch::lock(void) {
     while (this->isLocked()) {
     }
-    std::ofstream f(this->lockName);
+    std::ofstream f(this->lockName.c_str());
     return f.is_open() ? SYSIPC_S_OK : SYSIPC_E_INTERNAL;
 }
 
@@ -42,7 +42,7 @@ result_t FileDispatch::send(const std::string &buffer, bool lock) {
         result = this->lock();
     }
     if (SYSIPC_SUCCEEDED(result)) {
-        std::ofstream f(this->name);
+        std::ofstream f(this->name.c_str());
         result = f.is_open() ? SYSIPC_S_OK : SYSIPC_E_INTERNAL;
         if (SYSIPC_SUCCEEDED(result)) {
             f.write(buffer.data(), buffer.size());
@@ -61,7 +61,7 @@ result_t FileDispatch::receive(std::string &buffer, bool lock) {
         result = this->lock();
     }
     if (SYSIPC_SUCCEEDED(result)) {
-        std::ifstream f(this->name);
+        std::ifstream f(this->name.c_str());
         result = f.is_open() ? SYSIPC_S_OK : SYSIPC_E_INTERNAL;
         if (SYSIPC_SUCCEEDED(result)) {
             f.seekg(0, std::ios::end);
