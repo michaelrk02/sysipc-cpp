@@ -17,17 +17,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/distrib")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/distrib")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/distrib")
 
-set(cpp98_flag "")
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(cpp98_flag "-std=c++98")
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set(cpp98_flag "/std:c++98")
-endif()
-
 project(${project})
 add_library(${project} SHARED ${source_files_new})
 target_include_directories(${project} PUBLIC "${CMAKE_SOURCE_DIR}/include")
-target_compile_options(${project} PUBLIC ${cpp98_flag})
 target_compile_definitions(${project} PUBLIC "__SYSIPC_BUILD")
 
 add_subdirectory("test-server")

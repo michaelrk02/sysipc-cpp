@@ -2,16 +2,22 @@
 #define __SYSIPC_BASE_H
 
 #if (__cplusplus < 199711L)
-#error C++98 is required to build SysIPC!
+#error At least C++98 is required to build SysIPC!
 #endif
 
 #if defined(_MSC_VER) && !defined(__GNUC__)
+#if (_MSC_VER < 1600)
+#error At least Visual Studio 2010 is required to build SysIPC!
+#endif
 #ifdef __SYSIPC_BUILD
 #define SYSIPC_API  __declspec(dllexport)
 #else
 #define SYSIPC_API  __declspec(dllimport)
 #endif
 #elif !defined(_MSC_VER) && defined(__GNUC__)
+#if ((__GNUC__ <= 4) && (__GNUC_MINOR__ < 3))
+#error At least GCC 4.3 is required to build SysIPC!
+#endif
 #ifdef __SYSIPC_BUILD
 #define SYSIPC_API  __attribute__((visibility("default")))
 #else
