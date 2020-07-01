@@ -52,7 +52,7 @@ result_t CServer::handle(const std::string &method, IHandler *handler) {
         return SYSIPC_E_INVALIDARG;
     }
 
-    std::map<std::string, IHandler*>::iterator prevHandler = this->handlers.find(method);
+    std::map<std::string, IHandler *>::iterator prevHandler = this->handlers.find(method);
     result = (prevHandler == this->handlers.end()) ? SYSIPC_S_OK : SYSIPC_SERVER_E_HANDLEREXISTS;
     if (SYSIPC_SUCCEEDED(result)) {
         this->handlers[method] = handler;
