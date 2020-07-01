@@ -15,7 +15,7 @@
 #define SYSIPC_API  __declspec(dllimport)
 #endif
 #elif !defined(_MSC_VER) && defined(__GNUC__)
-#if ((__GNUC__ <= 4) && (__GNUC_MINOR__ < 3))
+#if (((__GNUC__ == 4) && (__GNUC_MINOR__ < 3)) || (__GNUC__ < 4))
 #error At least GCC 4.3 is required to build SysIPC!
 #endif
 #ifdef __SYSIPC_BUILD
