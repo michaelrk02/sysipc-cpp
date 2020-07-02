@@ -110,7 +110,10 @@ std::string CServer::getAddress(void) {
 result_t CServer::intercept(void) {
     result_t result;
 
-    while (!this->request->exists()) {
+    while (this->isRunning() && !this->request->exists()) {
+    }
+    if (!this->isRunning()) {
+        return SYSIPC_SERVER_E_STOPPED;
     }
 
     std::string reqBuf;
