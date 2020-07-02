@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 set(project "sysipc")
 set(source_files
     "file_dispatch"
+    "mutex"
     "router"
     "server"
     "client"

@@ -2,6 +2,7 @@
 #define __SYSIPC_SERVER_C_H
 
 #include "file_dispatch.h"
+#include "mutex.h"
 
 #include <sysipc/server.h>
 
@@ -20,6 +21,9 @@ private:
 
     std::map<std::string, IHandler *> handlers;
 
+    bool running;
+    mutex_t mtx;
+
 public:
     CServer(void);
     ~CServer(void);
@@ -30,7 +34,10 @@ public:
     void destroy(void);
 
     result_t handle(const std::string &method, IHandler *handler);
+
+    bool isRunning(void);
     void run(void);
+    void stop(void);
 
     IRouter *getRouter(void);
     std::string getName(void);

@@ -19,7 +19,10 @@ public:
 class IServer : public IBase {
 public:
     virtual result_t handle(const std::string &method, IHandler *handler) = 0;
+
+    virtual bool isRunning(void) = 0;
     virtual void run(void) = 0;
+    virtual void stop(void) = 0;
 
     virtual IRouter *getRouter(void) = 0;
     virtual std::string getName(void) = 0;

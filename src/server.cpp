@@ -11,6 +11,7 @@ CServer::CServer(void) {
 }
 
 CServer::~CServer(void) {
+    mutex_destroy(this->mtx);
     delete this->dispatch;
     delete this->request;
     delete this->response;
@@ -29,6 +30,8 @@ result_t CServer::init(IRouter *router, const std::string &name) {
     this->dispatch = new FileDispatch(this->getAddress());
     this->request = new FileDispatch(this->getAddress() + ".request");
     this->response = new FileDispatch(this->getAddress() + ".response");
+
+    this->mtx = mutex_create();
 
     return result;
 }
@@ -61,18 +64,35 @@ result_t CServer::handle(const std::string &method, IHandler *handler) {
     return result;
 }
 
+bool CServer::isRunning(void) {
+    mutex_lock(this->mtx);
+    bool running = this->running;
+    mutex_unlock(this->mtx);
+    return running;
+}
+
 void CServer::run(void) {
+    mutex_lock(this->mtx);
+    this->running = true;
+    mutex_unlock(this->mtx);
+
     this->dispatch->unlock();
     this->request->remove();
     this->request->unlock();
     this->response->remove();
     this->response->unlock();
-    while (true) {
+    while (this->isRunning()) {
         result_t result = this->intercept();
         if (SYSIPC_FAILED(result)) {
             this->logError(result);
         }
     }
+}
+
+void CServer::stop(void) {
+    mutex_lock(this->mtx);
+    this->running = false;
+    mutex_unlock(this->mtx);
 }
 
 IRouter *CServer::getRouter(void) {
