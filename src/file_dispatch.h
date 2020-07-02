@@ -5,7 +5,7 @@
 
 namespace sysipc {
 
-class FileDispatch {
+class SYSIPC_API FileDispatch {
 private:
     std::string name, lockName;
 

@@ -13,9 +13,17 @@
 #endif
 #elif !defined(_MSC_VER) && defined(__GNUC__)
 #ifdef __SYSIPC_BUILD
+#ifdef _WIN32
+#define SYSIPC_API  __attribute__((dllexport))
+#else
 #define SYSIPC_API  __attribute__((visibility("default")))
+#endif
+#else
+#ifdef _WIN32
+#define SYSIPC_API  __attribute__((dllimport))
 #else
 #define SYSIPC_API
+#endif
 #endif
 #endif
 
@@ -72,9 +80,9 @@ public:
 };
 
 // class factory
-class Create {
+class SYSIPC_API Create {
 public:
-    static SYSIPC_API result_t router(const std::string &name, IRouter **router);
+    static result_t router(const std::string &name, IRouter **router);
 };
 
 };

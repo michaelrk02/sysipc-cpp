@@ -7,7 +7,7 @@
 
 namespace sysipc {
 
-class CClient : public IClient {
+class SYSIPC_API CClient : public IClient {
 private:
     IRouter *router;
     std::string serverName;

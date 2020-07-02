@@ -5,7 +5,7 @@
 
 namespace sysipc {
 
-class CRouter : public IRouter {
+class SYSIPC_API CRouter : public IRouter {
 private:
     std::string name;
 

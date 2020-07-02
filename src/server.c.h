@@ -8,7 +8,7 @@
 
 namespace sysipc {
 
-class CServer : public IServer {
+class SYSIPC_API CServer : public IServer {
 private:
     std::ostream *logger;
 
