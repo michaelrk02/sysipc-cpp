@@ -77,12 +77,18 @@ result_t CClient::call(const std::string &method, std::map<std::string, rapidjso
                         rapidjson::Document resDoc;
                         resDoc.Parse(resBuf.c_str());
 
-                        callResult.returnValue = resDoc["return"];
-                        callResult.errorDescription = resDoc["error"].GetString();
+                        rapidjson::Value &resCallIdValue = resDoc["call_id"];
+                        unsigned long long resCallId = resCallIdValue.GetUint64();
+                        result = (callId == resCallId) ? SYSIPC_S_OK : SYSIPC_CLIENT_E_IDMISMATCH;
+                        if (SYSIPC_SUCCEEDED(result)) {
+                            this->response->remove();
 
-                        result = (callResult.errorDescription.size() == 0) ? SYSIPC_S_OK : SYSIPC_CLIENT_E_REMOTE;
+                            callResult.returnValue = resDoc["return"];
+                            callResult.errorDescription = resDoc["error"].GetString();
+
+                            result = (callResult.errorDescription.size() == 0) ? SYSIPC_S_OK : SYSIPC_CLIENT_E_REMOTE;
+                        }
                     }
-                    this->response->remove();
                     this->response->unlock();
                 }
             }

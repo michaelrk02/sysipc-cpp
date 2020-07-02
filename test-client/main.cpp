@@ -36,7 +36,9 @@ int main(int argc, char **argv) {
                 }
 
                 if (SYSIPC_FAILED(result)) {
-                    std::cerr << "SysIPC error: 0x" << std::hex << result << std::dec << std::endl;
+                    std::ios::fmtflags flags = std::cerr.flags();
+                    std::cerr << "SysIPC error: " << std::showbase << std::hex << result << std::endl;
+                    std::cerr.flags(flags);
 
                     if (result == SYSIPC_CLIENT_E_REMOTE) {
                         std::cerr << "remote: " << opResult.errorDescription << std::endl;

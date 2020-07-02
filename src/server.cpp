@@ -97,6 +97,8 @@ result_t CServer::intercept(void) {
     result = this->request->lock();
     if (SYSIPC_SUCCEEDED(result)) {
         result = this->request->receive(reqBuf);
+        this->request->remove();
+        this->request->unlock();
         if (SYSIPC_SUCCEEDED(result)) {
             rapidjson::Document reqDoc;
             reqDoc.Parse(reqBuf.c_str());
@@ -110,33 +112,37 @@ result_t CServer::intercept(void) {
                 argsMap[it->name.GetString()] = it->value;
             }
 
+            rapidjson::Document resDoc(rapidjson::kObjectType);
+
+            rapidjson::Value returnValue;
+            std::string errorDescription;
+
             std::map<std::string, IHandler *>::iterator handlerIt = this->handlers.find(method);
             result = (handlerIt != this->handlers.end()) ? SYSIPC_S_OK : SYSIPC_SERVER_E_HANDLERNOTFOUND;
             if (SYSIPC_SUCCEEDED(result)) {
                 IHandler *handler = handlerIt->second;
                 result = (handler != NULL) ? SYSIPC_S_OK : SYSIPC_E_BADPTR;
                 if (SYSIPC_SUCCEEDED(result)) {
-                    rapidjson::Value returnValue;
-                    std::string errorDescription;
                     handler->handle(method, argsMap, returnValue, errorDescription);
-
-                    rapidjson::Document resDoc(rapidjson::kObjectType);
-                    rapidjson::Value callIdValue;
-                    callIdValue.SetUint64(callId);
-                    resDoc.AddMember("call_id", callIdValue, resDoc.GetAllocator());
-                    resDoc.AddMember("return", returnValue, resDoc.GetAllocator());
-                    resDoc.AddMember("error", rapidjson::StringRef(errorDescription.c_str()), resDoc.GetAllocator());
-
-                    rapidjson::StringBuffer resBuf;
-                    rapidjson::Writer<rapidjson::StringBuffer> resWriter(resBuf);
-                    resDoc.Accept(resWriter);
-
-                    result = this->response->send(resBuf.GetString(), true);
+                } else {
+                    errorDescription = "bad handler pointer";
                 }
+            } else {
+                errorDescription = "no handler is associated with the method";
             }
+
+            rapidjson::Value callIdValue;
+            callIdValue.SetUint64(callId);
+            resDoc.AddMember("call_id", callIdValue, resDoc.GetAllocator());
+            resDoc.AddMember("return", returnValue, resDoc.GetAllocator());
+            resDoc.AddMember("error", rapidjson::StringRef(errorDescription.c_str()), resDoc.GetAllocator());
+
+            rapidjson::StringBuffer resBuf;
+            rapidjson::Writer<rapidjson::StringBuffer> resWriter(resBuf);
+            resDoc.Accept(resWriter);
+
+            result = this->response->send(resBuf.GetString(), true);
         }
-        this->request->remove();
-        this->request->unlock();
     }
 
     return result;
@@ -145,9 +151,10 @@ result_t CServer::intercept(void) {
 void CServer::logError(result_t result) {
     if (this->logger != NULL) {
         std::ostream &logger = *this->logger;
-        logger.setf(std::ios::hex);
-        logger << "SysIPC [" << this->getAddress() << "] error: 0x" << result << std::endl;
-        logger.unsetf(std::ios::hex);
+
+        std::ios::fmtflags flags = logger.flags();
+        logger << "SysIPC [" << this->getAddress() << "] error: " << std::showbase << std::hex << result << std::endl;
+        logger.flags(flags);
     }
 }
 
