@@ -107,9 +107,9 @@ result_t CServer::intercept(void) {
             std::string method = reqDoc["method"].GetString();
             rapidjson::Value &args = reqDoc["args"];
 
-            std::map<std::string, rapidjson::Value> argsMap;
+            std::map<std::string, rapidjson::Value *> argsMap;
             for (rapidjson::Value::MemberIterator it = args.MemberBegin(); it != args.MemberEnd(); ++it) {
-                argsMap[it->name.GetString()] = it->value;
+                argsMap[it->name.GetString()] = &it->value;
             }
 
             rapidjson::Document resDoc(rapidjson::kObjectType);

@@ -25,9 +25,9 @@ int main(int argc, char **argv) {
                 rapidjson::Value rhs;
                 rhs.SetDouble(b);
 
-                std::map<std::string, rapidjson::Value> args;
-                args["lhs"] = lhs;
-                args["rhs"] = rhs;
+                std::map<std::string, rapidjson::Value *> args;
+                args["lhs"] = &lhs;
+                args["rhs"] = &rhs;
 
                 sysipc::CallResult opResult;
                 result = client->call(op, args, opResult);

@@ -23,7 +23,7 @@ public:
     void destroy(void);
 
     result_t init(IRouter *router, const std::string &serverName);
-    result_t call(const std::string &method, std::map<std::string, rapidjson::Value> &args, CallResult &callResult);
+    result_t call(const std::string &method, const std::map<std::string, rapidjson::Value *> &args, CallResult &callResult);
 
     IRouter *getRouter(void);
     std::string getServerName(void);

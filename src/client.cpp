@@ -37,7 +37,7 @@ void CClient::destroy(void) {
     delete this;
 }
 
-result_t CClient::call(const std::string &method, std::map<std::string, rapidjson::Value> &args, CallResult &callResult) {
+result_t CClient::call(const std::string &method, const std::map<std::string, rapidjson::Value *> &args, CallResult &callResult) {
     result_t result = SYSIPC_S_OK;
 
     result = this->serverDispatch->lock();
@@ -45,8 +45,8 @@ result_t CClient::call(const std::string &method, std::map<std::string, rapidjso
         rapidjson::Document reqDoc(rapidjson::kObjectType);
 
         rapidjson::Value argsObj(rapidjson::kObjectType);
-        for (std::map<std::string, rapidjson::Value>::iterator it = args.begin(); it != args.end(); ++it) {
-            argsObj.AddMember(rapidjson::StringRef(it->first.c_str()), it->second, reqDoc.GetAllocator());
+        for (std::map<std::string, rapidjson::Value *>::const_iterator it = args.begin(); it != args.end(); ++it) {
+            argsObj.AddMember(rapidjson::StringRef(it->first.c_str()), *it->second, reqDoc.GetAllocator());
         }
 
         // it is guaranteed to be unique although it is not random

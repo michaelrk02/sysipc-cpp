@@ -8,7 +8,7 @@ namespace sysipc {
 // handler interface
 class IHandler : public IBase {
 public:
-    virtual void handle(const std::string &method, std::map<std::string, rapidjson::Value> &args, rapidjson::Value &returnValue, std::string &errorDescription) = 0;
+    virtual void handle(const std::string &method, const std::map<std::string, rapidjson::Value *> &args, rapidjson::Value &returnValue, std::string &errorDescription) = 0;
 };
 
 // server error codes

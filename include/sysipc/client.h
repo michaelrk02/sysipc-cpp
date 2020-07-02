@@ -19,7 +19,7 @@ struct CallResult {
 // client interface
 class IClient : public IBase {
 public:
-    virtual result_t call(const std::string &method, std::map<std::string, rapidjson::Value> &args, CallResult &callResult) = 0;
+    virtual result_t call(const std::string &method, const std::map<std::string, rapidjson::Value *> &args, CallResult &callResult) = 0;
 
     virtual IRouter *getRouter(void) = 0;
     virtual std::string getServerName(void) = 0;

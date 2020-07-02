@@ -9,7 +9,7 @@ public:
 
     void destroy(void);
 
-    void handle(const std::string &method, std::map<std::string, rapidjson::Value> &args, rapidjson::Value &returnValue, std::string &errorDescription);
+    void handle(const std::string &method, const std::map<std::string, rapidjson::Value *> &args, rapidjson::Value &returnValue, std::string &errorDescription);
 
 private:
     void add(double a, double b, double &result, std::string &error);
