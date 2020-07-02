@@ -41,11 +41,15 @@ class IServer;
 class IClient;
 
 // result type
+// layout: 0xABBBCCCC
+//  A : 4-bit severity code (0 for success or 8 for failure)
+//  B : 12-bit facility code (defined below)
+//  C : 16-bit status code (defined in each facility header file)
 typedef unsigned int result_t;
 #define SYSIPC_SEVERITY(r)                      (((r) >> 28) & 0xF)
 #define SYSIPC_FACILITY(r)                      (((r) >> 16) & 0xFFF)
-#define SYSIPC_CODE                             ((r) & 0xFFFF)
-#define SYSIPC_RESULT(severity,facility,code)   ((((severity) & 0xF) << 28) | (((facility) & 0xFFF) << 16) | ((code) & 0xFFFF))
+#define SYSIPC_STATUS                           ((r) & 0xFFFF)
+#define SYSIPC_RESULT(severity,facility,status) ((((severity) & 0xF) << 28) | (((facility) & 0xFFF) << 16) | ((status) & 0xFFFF))
 #define SYSIPC_SEVERITY_SUCCESS                 0x0
 #define SYSIPC_SEVERITY_FAILURE                 0x8
 
