@@ -24,9 +24,9 @@ int main(int argc, char **argv) {
     }
 
     if (SYSIPC_FAILED(result)) {
-        std::cerr.setf(std::ios::hex);
-        std::cerr << "SysIPC error: 0x" << result << std::endl;
-        std::cerr.unsetf(std::ios::hex);
+        std::ios::fmtflags flags = std::cerr.flags();
+        std::cerr << "SysIPC error: " << std::showbase << std::hex << result << std::endl;
+        std::cerr.flags(flags);
     }
 
     return 0;
