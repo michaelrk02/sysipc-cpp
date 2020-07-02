@@ -54,10 +54,10 @@ typedef unsigned int result_t;
 #define SYSIPC_SEVERITY_FAILURE                 0x8
 
 // result facilities
-#define SYSIPC_FACILITY_GENERIC     0x0000
-#define SYSIPC_FACILITY_ROUTER      0x0001
-#define SYSIPC_FACILITY_SERVER      0x0002
-#define SYSIPC_FACILITY_CLIENT      0x0003
+#define SYSIPC_FACILITY_GENERIC     0x000
+#define SYSIPC_FACILITY_ROUTER      0x001
+#define SYSIPC_FACILITY_SERVER      0x002
+#define SYSIPC_FACILITY_CLIENT      0x003
 
 // generic errors
 #define SYSIPC_S_OK         SYSIPC_RESULT(SYSIPC_SEVERITY_SUCCESS, SYSIPC_FACILITY_GENERIC, 0x0000)
