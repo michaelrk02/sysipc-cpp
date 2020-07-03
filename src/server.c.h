@@ -8,7 +8,7 @@
 
 namespace sysipc {
 
-class SYSIPC_API CServer : public IServer {
+class CServer : public IServer {
 private:
     std::ostream *logger;
 
@@ -25,27 +25,27 @@ private:
     mutex_t mtx;
 
 public:
-    CServer(void);
-    ~CServer(void);
+    SYSIPC_API CServer(void);
+    SYSIPC_API ~CServer(void);
 
-    result_t init(IRouter *router, const std::string &name);
-    result_t init(IRouter *router, const std::string &name, std::ostream &logger);
+    SYSIPC_API result_t init(IRouter *router, const std::string &name);
+    SYSIPC_API result_t init(IRouter *router, const std::string &name, std::ostream &logger);
 
-    void destroy(void);
+    SYSIPC_API void destroy(void);
 
-    result_t handle(const std::string &method, IHandler *handler);
+    SYSIPC_API result_t handle(const std::string &method, IHandler *handler);
 
-    bool isRunning(void);
-    void run(void);
-    void stop(void);
+    SYSIPC_API bool isRunning(void);
+    SYSIPC_API void run(void);
+    SYSIPC_API void stop(void);
 
-    IRouter *getRouter(void);
-    std::string getName(void);
-    std::string getAddress(void);
+    SYSIPC_API IRouter *getRouter(void);
+    SYSIPC_API std::string getName(void);
+    SYSIPC_API std::string getAddress(void);
 
 private:
-    result_t intercept(void);
-    void logError(result_t result);
+    SYSIPC_API result_t intercept(void);
+    SYSIPC_API void logError(result_t result);
 };
 
 };

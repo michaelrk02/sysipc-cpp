@@ -80,9 +80,9 @@ public:
 };
 
 // class factory
-class SYSIPC_API Create {
+class Create {
 public:
-    static result_t router(const std::string &name, IRouter **router);
+    static SYSIPC_API result_t router(const std::string &name, IRouter **router);
 };
 
 };

@@ -5,22 +5,22 @@
 
 namespace sysipc {
 
-class SYSIPC_API FileDispatch {
+class FileDispatch {
 private:
     std::string name, lockName;
 
 public:
-    FileDispatch(const std::string &name);
+    SYSIPC_API FileDispatch(const std::string &name);
 
-    bool exists(void);
-    void remove(void);
+    SYSIPC_API bool exists(void);
+    SYSIPC_API void remove(void);
 
-    bool isLocked(void);
-    result_t lock(void);
-    void unlock(void);
+    SYSIPC_API bool isLocked(void);
+    SYSIPC_API result_t lock(void);
+    SYSIPC_API void unlock(void);
 
-    result_t send(const std::string &buffer, bool lock = false);
-    result_t receive(std::string &buffer, bool lock = false);
+    SYSIPC_API result_t send(const std::string &buffer, bool lock = false);
+    SYSIPC_API result_t receive(std::string &buffer, bool lock = false);
 };
 
 };

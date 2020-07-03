@@ -7,7 +7,7 @@
 
 namespace sysipc {
 
-class SYSIPC_API CClient : public IClient {
+class CClient : public IClient {
 private:
     IRouter *router;
     std::string serverName;
@@ -17,17 +17,17 @@ private:
     FileDispatch *response;
 
 public:
-    CClient(void);
-    ~CClient(void);
+    SYSIPC_API CClient(void);
+    SYSIPC_API ~CClient(void);
 
-    void destroy(void);
+    SYSIPC_API void destroy(void);
 
-    result_t init(IRouter *router, const std::string &serverName);
-    result_t call(const std::string &method, const std::map<std::string, rapidjson::Value *> &args, CallResult &callResult);
+    SYSIPC_API result_t init(IRouter *router, const std::string &serverName);
+    SYSIPC_API result_t call(const std::string &method, const std::map<std::string, rapidjson::Value *> &args, CallResult &callResult);
 
-    IRouter *getRouter(void);
-    std::string getServerName(void);
-    std::string getServerAddress(void);
+    SYSIPC_API IRouter *getRouter(void);
+    SYSIPC_API std::string getServerName(void);
+    SYSIPC_API std::string getServerAddress(void);
 };
 
 };

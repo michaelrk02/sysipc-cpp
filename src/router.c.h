@@ -5,22 +5,22 @@
 
 namespace sysipc {
 
-class SYSIPC_API CRouter : public IRouter {
+class CRouter : public IRouter {
 private:
     std::string name;
 
 public:
-    CRouter(void);
+    SYSIPC_API CRouter(void);
 
-    result_t init(const std::string &name);
+    SYSIPC_API result_t init(const std::string &name);
 
-    void destroy(void);
+    SYSIPC_API void destroy(void);
 
-    result_t createServer(const std::string &name, IServer **server);
-    result_t createServer(const std::string &name, std::ostream &logger, IServer **server);
-    result_t createClient(const std::string &name, IClient **client);
+    SYSIPC_API result_t createServer(const std::string &name, IServer **server);
+    SYSIPC_API result_t createServer(const std::string &name, std::ostream &logger, IServer **server);
+    SYSIPC_API result_t createClient(const std::string &name, IClient **client);
 
-    std::string getName(void);
+    SYSIPC_API std::string getName(void);
 };
 
 };
